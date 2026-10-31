@@ -26,7 +26,7 @@ export function track(type: EventType, path = window.location.pathname) {
   try {
     const body = JSON.stringify({ type, path, sessionId: sessionId(), ...(document.referrer ? { referrer: document.referrer } : {}) });
     // Never throws and never blocks the page: analytics must not be able to break booking.
-    void fetch("/api/v1/public/track", { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true }).catch(() => {});
+    void fetch(`${import.meta.env.VITE_API_URL || "/api/v1"}/public/track`, { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true }).catch(() => {});
   } catch {
     /* ignore */
   }
