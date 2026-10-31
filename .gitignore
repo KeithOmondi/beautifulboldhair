@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local settings, never committed (a committed VITE_API_URL gets baked into the live build)
+.env
