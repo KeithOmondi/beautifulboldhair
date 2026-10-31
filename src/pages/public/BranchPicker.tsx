@@ -80,7 +80,7 @@ export function BranchSwitch({ current, branches, dark = true }: { current: stri
   return (
     <span className="relative">
       <button type="button" onClick={() => setOpen(!open)} aria-haspopup="menu" aria-expanded={open} aria-label={`Branch: ${branchLabel(now)}. Change branch`} className={`inline-flex h-10 items-center gap-1.5 rounded-lg border px-3 text-sm font-medium ${dark ? "border-white/25 text-stone-100 hover:bg-white/10" : "border-line text-ink hover:bg-stone-50"}`}>
-        <MapPin className="size-4" aria-hidden /><span className="max-w-28 truncate">{branchLabel(now)}</span><ChevronDown className="size-4" aria-hidden />
+        <MapPin className="size-4" aria-hidden /><span className="hidden max-w-28 truncate sm:inline">{branchLabel(now)}</span><ChevronDown className="size-4" aria-hidden />
       </button>
       {open && (
         <span role="menu" className="absolute right-0 z-50 mt-2 w-60 overflow-hidden rounded-lg border border-line bg-white text-left text-sm text-ink shadow-lg">

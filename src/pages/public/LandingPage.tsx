@@ -75,7 +75,7 @@ function ShareMenu({ title, text, url, label = "Share", className = "" }: { titl
     setOpen((o) => !o);
   };
   return (
-    <span className={`relative inline-block ${className}`}>
+    <span className={`relative ${className || "inline-block"}`}>
       <button type="button" onClick={() => void share()} aria-haspopup="menu" aria-expanded={open} className="inline-flex h-10 items-center gap-2 rounded-lg border border-current/30 px-4 text-sm font-medium hover:bg-white/10">
         <Share2 className="size-4" aria-hidden /> {label}
       </button>
@@ -148,7 +148,7 @@ export default function LandingPage() {
       {/* Navigation */}
       <header className="sticky top-0 z-30 border-b border-white/10 bg-ink/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-          <a href="#top" className="font-display text-xl font-semibold text-gold-300">{salon.name}</a>
+          <a href="#top" title={salon.name} className="min-w-0 truncate font-display text-lg font-semibold text-gold-300 sm:text-xl">{salon.name}</a>
           <nav aria-label="Sections" className="hidden items-center gap-6 text-sm text-stone-300 md:flex">
             {hasShop && <a href="#shop" className="hover:text-white">Shop</a>}
             {d.gallery.length > 0 && <a href="#work" className="hover:text-white">Our work</a>}
@@ -156,7 +156,7 @@ export default function LandingPage() {
             <a href="#reviews" className="hover:text-white">Reviews</a>
             <a href="#visit" className="hover:text-white">Visit us</a>
           </nav>
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             <BranchSwitch current={d.branch} branches={d.branches} />
             <ShareMenu title={salon.name} text={`Have a look at ${salon.name}`} url={window.location.origin} className="hidden text-stone-200 lg:inline-block" />
             {hasShop && (
@@ -165,7 +165,7 @@ export default function LandingPage() {
                 {bag.count > 0 && <span className="absolute -top-0.5 -right-0.5 flex min-w-4 items-center justify-center rounded-full bg-gold-400 px-1 text-[10px] font-bold text-ink">{bag.count}</span>}
               </Link>
             )}
-            <Link to="/book" className="inline-flex h-10 items-center rounded-lg bg-gold-400 px-5 text-sm font-semibold text-ink hover:bg-gold-300">Book now</Link>
+            <Link to="/book" className="inline-flex h-10 items-center rounded-lg bg-gold-400 px-3 text-sm font-semibold whitespace-nowrap text-ink hover:bg-gold-300 sm:px-5">Book now</Link>
           </div>
         </div>
       </header>
@@ -343,7 +343,7 @@ export default function LandingPage() {
             {salon.about && <p className="mt-4 whitespace-pre-line leading-relaxed">{salon.about}</p>}
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <Link to="/book" className="inline-flex h-11 items-center rounded-lg bg-gold-400 px-6 text-sm font-semibold text-ink hover:bg-gold-300">Book your appointment</Link>
-              <ShareMenu title={salon.name} text={`Have a look at ${salon.name}`} url={window.location.origin} label="Tell a friend" className="text-stone-200" />
+              <ShareMenu title={salon.name} text={`Have a look at ${salon.name}`} url={window.location.origin} label="Tell a friend" className="inline-block text-stone-200" />
             </div>
           </div>
           <ul className="space-y-4 text-sm">

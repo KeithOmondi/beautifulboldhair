@@ -215,10 +215,10 @@ function OpeningHoursCard({ initial }: { initial: Settings["openingHours"] }) {
                 {d.label}
               </label>
               {h ? (
-                <div className="flex items-center gap-2 text-sm">
-                  <input type="time" aria-label={`${d.label} opens`} value={h.start} onChange={(e) => setDay(d.n, { ...h, start: e.target.value })} className="rounded-lg border border-line px-2 py-1.5" />
+                <div className="flex min-w-0 max-w-full items-center gap-2 text-sm">
+                  <input type="time" aria-label={`${d.label} opens`} value={h.start} onChange={(e) => setDay(d.n, { ...h, start: e.target.value })} className="min-w-0 rounded-lg border border-line px-2 py-1.5" />
                   <span className="text-stone-500">to</span>
-                  <input type="time" aria-label={`${d.label} closes`} value={h.end} onChange={(e) => setDay(d.n, { ...h, end: e.target.value })} className={`rounded-lg border px-2 py-1.5 ${h.end <= h.start ? "border-red-400" : "border-line"}`} />
+                  <input type="time" aria-label={`${d.label} closes`} value={h.end} onChange={(e) => setDay(d.n, { ...h, end: e.target.value })} className={`min-w-0 rounded-lg border px-2 py-1.5 ${h.end <= h.start ? "border-red-400" : "border-line"}`} />
                 </div>
               ) : <span className="text-sm text-stone-400">Closed</span>}
             </li>
