@@ -10,6 +10,8 @@ export interface SessionUser {
   branchId: string;
   /** May switch to other branches (e.g. an owner overseeing both sides). */
   canSwitchBranches: boolean;
+  /** The side of the business a receptionist or manager is limited to ("Lashes" or "Hair & Wigs"); empty = the whole branch. */
+  department?: string | null;
   mustChangePassword: boolean;
 }
 
@@ -73,6 +75,7 @@ export interface StaffMember {
   serviceIds: string[];
   weeklyHours: WeeklyHours | null;
   canSwitchBranches?: boolean;
+  department?: string | null;
   payType: "SALARY_ONLY" | "COMMISSION_ONLY" | "BOTH";
   monthlySalary: number | null;
   commissionPct: number | null;

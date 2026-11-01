@@ -82,6 +82,7 @@ export default function TeamPage() {
               </div>
               <div className="mt-3 flex flex-wrap gap-1.5">
                 <Badge tone="gold">{ROLE_LABEL[s.role]}</Badge>
+                {s.department && (s.role === "RECEPTIONIST" || s.role === "MANAGER") && <Badge>{s.department}</Badge>}
                 {s.isBookable && s.isActive && <Badge tone="green">Takes bookings</Badge>}
                 {!s.isActive && <Badge>Inactive</Badge>}
               </div>
@@ -130,6 +131,7 @@ function StaffDialog({ member, onClose, onCreated }: { member: StaffMember | nul
     isActive: member?.isActive ?? true,
     canSwitchBranches: member?.canSwitchBranches ?? false,
     staffBranchId: "",
+    department: member?.department ?? user?.department ?? "",
     payType: member?.payType ?? "COMMISSION_ONLY",
     monthlySalary: String(member?.monthlySalary ?? ""),
     commissionPct: member?.commissionPct != null ? String(member.commissionPct / 100) : "",
@@ -140,7 +142,7 @@ function StaffDialog({ member, onClose, onCreated }: { member: StaffMember | nul
   // The branch picked in the form (the one being viewed unless the owner changes it). The service list below belongs to the viewed branch.
   const chosenBranch = f.staffBranchId || activeBranchId;
   const otherBranch = pickBranch && chosenBranch !== activeBranchId;
-  const toggleService =(id: string) => setServiceIds((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]));
+  const toggleService = (id: string) => setServiceIds((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]));
 
   const save = useMutation({
     mutationFn: async () => {
@@ -154,6 +156,8 @@ function StaffDialog({ member, onClose, onCreated }: { member: StaffMember | nul
         weeklyHours: hours,
         // Services are per branch: when moving to or adding in another branch, they are chosen there afterwards.
         ...(otherBranch ? { staffBranchId: chosenBranch } : { serviceIds }),
+        // Which side (lashes or hair & wigs) a receptionist or manager looks after. A manager who is limited to one side cannot change it; the server fixes it to theirs.
+        ...(!user?.department && (f.role === "RECEPTIONIST" || f.role === "MANAGER") ? { department: f.department || null } : {}),
         // Pay is only sent by someone who may see it; the server ignores it from anyone else.
         ...(access.staffPay ? { payType: f.payType, monthlySalary: f.monthlySalary ? Number(f.monthlySalary) : null, commissionPct: f.commissionPct ? Math.round(Number(f.commissionPct) * 100) : null } : {}),
       };
@@ -193,23 +197,30 @@ function StaffDialog({ member, onClose, onCreated }: { member: StaffMember | nul
               {branches.data?.branches.filter((b) => b.isActive).map((b) => <option key={b.id} value={b.id}>{b.city ?? b.name}</option>)}
             </Select>
           )}
-          <Select label="Access level" value={f.role} disabled={isSelf} onChange={(e) => setF({ ...f, role: e.target.value as Role })} hint="Stylists see only their own appointments.">
+          <Select label="Access level" value={f.role} disabled={isSelf} onChange={(e) => { const role = e.target.value as Role; setF({ ...f, role, ...(role === "RECEPTIONIST" ? { isBookable: false } : {}) }); }} hint="Stylists see only their own appointments.">
             <option value="WORKER">Stylist</option>
             <option value="RECEPTIONIST">Receptionist</option>
             {canMakeManager && <option value="MANAGER">Manager</option>}
             {canMakeOwner && <option value="OWNER">Owner</option>}
           </Select>
+          {(f.role === "RECEPTIONIST" || f.role === "MANAGER") && (
+            <Select label="Department" value={f.department} disabled={Boolean(user?.department)} onChange={(e) => setF({ ...f, department: e.target.value })} hint={user?.department ? "You look after this side, so new people join it." : "Which side they handle. They only see that side's bookings and clients."}>
+              <option value="">Whole branch (both sides)</option>
+              <option value="Lashes">Lashes</option>
+              <option value="Hair & Wigs">Hair &amp; Wigs</option>
+            </Select>
+          )}
         </div>
 
         <div className="space-y-1 rounded-xl border border-line p-4">
-          <Toggle checked={f.isBookable} onChange={(v) => setF({ ...f, isBookable: v })} label="Takes online bookings" hint="Shows up on the calendar and on your booking website." />
+          {f.role !== "RECEPTIONIST" && <Toggle checked={f.isBookable} onChange={(v) => setF({ ...f, isBookable: v })} label="Takes online bookings" hint="Shows up on the calendar and on your booking website." />}
           {user?.canSwitchBranches && user.role === "OWNER" && (f.role === "OWNER" || f.role === "MANAGER") && !isSelf && <Toggle checked={f.canSwitchBranches} onChange={(v) => setF({ ...f, canSwitchBranches: v })} label="Can work across all branches" hint="Off keeps them on this branch only. On lets them switch between branches." />}
           {member && !isSelf && <Toggle checked={f.isActive} onChange={(v) => setF({ ...f, isActive: v })} label="Active" hint="Inactive people can't sign in or be booked." />}
         </div>
 
-        {otherBranch && f.isBookable && <p className="rounded-lg bg-cream p-3 text-xs text-stone-600">Choose which services {f.name.trim() || "they"} perform after saving, by opening them from that branch&apos;s team.</p>}
+        {otherBranch && f.isBookable && f.role !== "RECEPTIONIST" && <p className="rounded-lg bg-cream p-3 text-xs text-stone-600">Choose which services {f.name.trim() || "they"} perform after saving, by opening them from that branch&apos;s team.</p>}
 
-        {!otherBranch && f.isBookable && services.data && services.data.length > 0 && (
+        {!otherBranch && f.isBookable && f.role !== "RECEPTIONIST" && services.data && services.data.length > 0 && (
           <div>
             <h3 className="mb-1 font-sans text-sm font-semibold text-stone-700">Services they perform</h3>
             <p className="mb-2 text-xs text-stone-500">Clients are only matched with people who do the service they pick. Select none to allow all services.</p>
