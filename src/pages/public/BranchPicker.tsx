@@ -1,3 +1,4 @@
+import BrandMark from "../../components/BrandMark";
 import { useState } from "react";
 import { ArrowRight, ChevronDown, Clock, MapPin, Phone } from "lucide-react";
 import { setPublicBranch } from "../../lib/branch";
@@ -20,6 +21,7 @@ export const branchLabel = (b: Pick<PublicBranch, "city" | "name">) => b.city ??
 export function BranchChooser({ branches }: { branches: PublicBranch[] }) {
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center bg-ink px-4 py-12 text-center">
+      <BrandMark className="mb-5 size-24" />
       <p className="text-xs tracking-[0.3em] text-stone-400 uppercase">Welcome</p>
       <h1 className="mt-3 max-w-xl text-3xl font-semibold text-white sm:text-5xl">Choose your branch</h1>
       <p className="mt-3 text-stone-300">Pick the one nearest to you to see its services, prices and available times.</p>

@@ -4,12 +4,14 @@ import toast from "react-hot-toast";
 import { homeFor, useAuth } from "../../auth/AuthContext";
 import { api, errorMessage } from "../../lib/api";
 import { Button, ErrorNote, Input } from "../../components/ui";
+import BrandMark from "../../components/BrandMark";
 
 function Shell({ title, subtitle, children }: { title: string; subtitle: string; children: ReactNode }) {
   return (
     <div className="flex min-h-dvh items-center justify-center bg-ink px-4 py-10">
       <div className="w-full max-w-sm">
         <div className="mb-6 text-center">
+          <BrandMark className="mx-auto mb-3 size-16" />
           <h1 className="font-display text-2xl font-semibold text-gold-300">{title}</h1>
           <p className="mt-1 text-sm text-stone-400">{subtitle}</p>
         </div>

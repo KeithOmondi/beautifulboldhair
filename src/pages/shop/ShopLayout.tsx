@@ -5,6 +5,7 @@ import { CalendarCheck, Clock, MapPin, MessageCircle, Phone, Search, ShoppingBag
 import { api } from "../../lib/api";
 import { useBag } from "../../lib/cart";
 import { cx } from "../../components/ui";
+import BrandMark from "../../components/BrandMark";
 import { useShopConfig } from "./shopApi";
 import { BranchSwitch, type PublicBranch } from "../public/BranchPicker";
 
@@ -37,7 +38,7 @@ export default function ShopLayout({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-30 border-b border-line bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
           <button onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open} className="rounded-lg p-2 hover:bg-stone-100 md:hidden">{open ? <X className="size-5" /> : <Menu className="size-5" />}</button>
-          <Link to="/" className="font-display text-xl font-semibold text-ink">{salon?.name ?? " "}</Link>
+          <Link to="/" className="flex min-w-0 items-center gap-2 font-display text-lg font-semibold text-ink sm:text-xl"><BrandMark className="size-9" /><span className="truncate">{salon?.name ?? " "}</span></Link>
           <nav aria-label="Shop" className="ml-6 hidden items-center gap-1 md:flex">
             <NavLink to="/" end className={link}>Home</NavLink>
             <NavLink to="/shop" end className={link}>Shop</NavLink>
@@ -92,7 +93,7 @@ export default function ShopLayout({ children }: { children: ReactNode }) {
       <footer className="bg-ink px-4 py-10 text-sm text-stone-300">
         <div className="mx-auto grid max-w-6xl gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="font-display text-lg font-semibold text-gold-300">{salon?.name}</p>
+            <p className="flex items-center gap-3 font-display text-lg font-semibold text-gold-300"><BrandMark className="size-12" />{salon?.name}</p>
             {salon?.address && <p className="mt-3 flex gap-2"><MapPin className="mt-0.5 size-4 shrink-0 text-gold-300" aria-hidden />{salon.address}</p>}
             {salon?.phone && <p className="mt-2 flex gap-2"><Phone className="mt-0.5 size-4 shrink-0 text-gold-300" aria-hidden /><a href={`tel:${salon.phone.replace(/\s/g, "")}`} className="hover:text-white">{salon.phone}</a></p>}
             {salon?.whatsapp && <p className="mt-2 flex gap-2"><MessageCircle className="mt-0.5 size-4 shrink-0 text-gold-300" aria-hidden /><a href={`https://wa.me/${digits(salon.whatsapp).replace(/^0/, "254")}`} target="_blank" rel="noreferrer" className="hover:text-white">Chat on WhatsApp</a></p>}

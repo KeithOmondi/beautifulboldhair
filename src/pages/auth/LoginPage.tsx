@@ -3,6 +3,7 @@ import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { homeFor, useAuth } from "../../auth/AuthContext";
 import { errorMessage } from "../../lib/api";
 import { Button, ErrorNote, Input } from "../../components/ui";
+import BrandMark from "../../components/BrandMark";
 import { useBrand } from "../../layouts/StaffLayout";
 
 export default function LoginPage() {
@@ -36,6 +37,7 @@ export default function LoginPage() {
     <div className="flex min-h-dvh items-center justify-center bg-ink px-4 py-10">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
+          <BrandMark className="mx-auto mb-4 size-20" />
           <h1 className="font-display text-3xl font-semibold text-gold-300">{brand?.name ?? "Welcome"}</h1>
           <p className="mt-1 text-sm tracking-widest text-stone-400 uppercase">Staff sign in</p>
         </div>

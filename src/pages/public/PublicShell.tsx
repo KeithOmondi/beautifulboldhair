@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { MapPin, Phone } from "lucide-react";
+import BrandMark from "../../components/BrandMark";
 import { usePublicInfo } from "./publicApi";
 
 /** Header + footer for every customer-facing page except the landing page (which has its own). */
@@ -9,7 +10,8 @@ export default function PublicShell({ children, salonName, wide = false }: { chi
   return (
     <div className="flex min-h-dvh flex-col">
       <header className="bg-ink px-4 py-6 text-center">
-        <Link to="/" className="font-display text-2xl font-semibold text-gold-300 sm:text-3xl">
+        <Link to="/" className="inline-flex flex-col items-center gap-2 font-display text-2xl font-semibold text-gold-300 sm:text-3xl">
+          <BrandMark className="size-14" />
           {salonName ?? info?.name ?? " "}
         </Link>
         <p className="mt-1 text-xs tracking-[0.25em] text-stone-400 uppercase">Online booking</p>

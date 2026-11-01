@@ -7,6 +7,7 @@ import { api } from "../../lib/api";
 import { fmtDuration, money } from "../../lib/format";
 import { usePageMeta } from "../../lib/track";
 import { Spinner } from "../../components/ui";
+import BrandMark from "../../components/BrandMark";
 import { SiteFooter } from "./PublicShell";
 import { BranchChooser, BranchSwitch, type PublicBranch } from "./BranchPicker";
 import HeroCarousel, { type HeroSlideData } from "./HeroCarousel";
@@ -148,7 +149,7 @@ export default function LandingPage() {
       {/* Navigation */}
       <header className="sticky top-0 z-30 border-b border-white/10 bg-ink/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-          <a href="#top" title={salon.name} className="min-w-0 truncate font-display text-lg font-semibold text-gold-300 sm:text-xl">{salon.name}</a>
+          <a href="#top" title={salon.name} className="flex min-w-0 items-center gap-2 font-display text-lg font-semibold text-gold-300 sm:text-xl"><BrandMark className="size-9" /><span className="sr-only truncate sm:not-sr-only">{salon.name}</span></a>
           <nav aria-label="Sections" className="hidden items-center gap-6 text-sm text-stone-300 md:flex">
             {hasShop && <a href="#shop" className="hover:text-white">Shop</a>}
             {d.gallery.length > 0 && <a href="#work" className="hover:text-white">Our work</a>}

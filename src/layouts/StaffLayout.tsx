@@ -5,6 +5,7 @@ import { BarChart3, CalendarDays, Coins, ImageIcon, LineChart, LogOut, Menu, Mes
 import { useAuth } from "../auth/AuthContext";
 import { api } from "../lib/api";
 import { Avatar, cx } from "../components/ui";
+import BrandMark from "../components/BrandMark";
 import { useAccess, useBranches, type Access } from "../lib/queries";
 import { setStaffBranch, staffBranch } from "../lib/branch";
 import type { Role } from "../lib/types";
@@ -135,8 +136,13 @@ export default function StaffLayout() {
   const sidebar = (
     <div className="flex h-full flex-col bg-ink py-5">
       <div className="mb-6 px-6">
-        <p className="font-display text-xl font-semibold text-gold-300">{brandName}</p>
-        <p className="text-xs tracking-widest text-stone-400 uppercase">Studio manager</p>
+        <div className="flex items-center gap-3">
+          <BrandMark className="size-11" />
+          <div className="min-w-0">
+            <p className="font-display text-lg leading-tight font-semibold text-gold-300">{brandName}</p>
+            <p className="text-xs tracking-widest text-stone-400 uppercase">Studio manager</p>
+          </div>
+        </div>
         {canPick && (
           <label className="mt-3 block">
             <span className="sr-only">Branch</span>
